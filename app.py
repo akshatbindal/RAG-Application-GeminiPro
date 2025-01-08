@@ -1,7 +1,4 @@
 import streamlit as st
-from dotenv import load_dotenv
-load_dotenv()
-import os
 from src.RAG import ChromaDBManager
 import google.generativeai as genai
 
@@ -25,11 +22,11 @@ def make_rag_prompt(query, relevant_passage):
     return prompt
 
 def generate_answer(prompt):
-    gemini_api_key = os.getenv("GEMINI_API_KEY")
+    gemini_api_key = st.secrets["api"]["key"]
     if not gemini_api_key:
         raise ValueError("Gemini API Key not provided. Please provide GEMINI_API_KEY as an environment variable")
     genai.configure(api_key=gemini_api_key)
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('gemini-2.0-flash-exp')
     answer = model.generate_content(prompt)
     return answer.text
 

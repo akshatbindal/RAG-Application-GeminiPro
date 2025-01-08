@@ -1,7 +1,4 @@
 import streamlit as st
-from dotenv import load_dotenv
-load_dotenv()
-import os
 from typing import Iterable, Tuple
 import google.generativeai as genai
 import chromadb
