@@ -1,8 +1,6 @@
 import streamlit as st
 from typing import Iterable, Tuple
 import google.generativeai as genai
-import chromadb
-from chromadb import Documents, EmbeddingFunction, Embeddings
 from src.utils import load_pdf, split_text
 from src.RAG import ChromaDBManager
 from app import get_relevant_passage, make_rag_prompt, generate_answer
@@ -18,10 +16,10 @@ def create_chroma_db_from_pdf(file, name):
 st.title("RAG-based Query Response System")
 
 st.sidebar.title("Upload PDF and Create ChromaDB Vector")
-uploaded_file = st.sidebar.file_uploader("Upload a PDF file", type="pdf")
-collection_name = st.sidebar.text_input("Enter a name for the ChromaDB collection")
+uploaded_file = st.sidebar.file_uploader("Upload a PDF file", type="pdf", key="file_uploader")
+collection_name = st.sidebar.text_input("Enter a name for the ChromaDB collection", key="collection_name_input")
 
-if st.sidebar.button("Create ChromaDB Vector"):
+if st.sidebar.button("Create ChromaDB Vector", key="create_chroma_db_button"):
     if uploaded_file and collection_name:
         with st.spinner("Creating ChromaDB vector..."):
             db, collection_name = create_chroma_db_from_pdf(uploaded_file, collection_name)
@@ -30,9 +28,9 @@ if st.sidebar.button("Create ChromaDB Vector"):
         st.sidebar.error("Please upload a PDF file and provide a name for the collection.")
 
 st.header("Query the ChromaDB Vector")
-query = st.text_input("Enter your query:")
+query = st.text_input("Enter your query:", key="query_input")
 
-if st.button("Get Answer"):
+if st.button("Get Answer", key="get_answer_button"):
     if query and collection_name:
         chroma_db_manager = ChromaDBManager(path="chromadb", name=collection_name)
         db = chroma_db_manager.load_chroma_collection()

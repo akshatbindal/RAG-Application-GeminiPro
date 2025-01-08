@@ -1,15 +1,12 @@
-from dotenv import load_dotenv
-load_dotenv()
-import os
 from typing import Iterable, Tuple
 import google.generativeai as genai
 import chromadb
-from chromadb import Documents, EmbeddingFunction, Embeddings
 from .utils import load_pdf, split_text
+import streamlit as st
 
-class GeminiEmbeddingFunction(EmbeddingFunction):
-    def __call__(self, input: Documents) -> Embeddings:
-        gemini_api_key = os.getenv("GEMINI_API_KEY")
+class GeminiEmbeddingFunction(chromadb.EmbeddingFunction):
+    def __call__(self, input: chromadb.Documents) -> chromadb.Embeddings:
+        gemini_api_key = st.secrets["api"]["key"]
         if not gemini_api_key:
             raise ValueError("Gemini API Key not provided. Please provide GEMINI_API_KEY as an environment variable")
         genai.configure(api_key=gemini_api_key)
