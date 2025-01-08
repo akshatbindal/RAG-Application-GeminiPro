@@ -1,3 +1,6 @@
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 from typing import Iterable, Tuple
 import google.generativeai as genai
 import chromadb

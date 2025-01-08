@@ -1,6 +1,6 @@
 pandas
 pypdf
-PyPDF2
 chromadb
 google-generativeai
 streamlit
+pysqlite3-binary
